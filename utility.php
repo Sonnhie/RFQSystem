@@ -1255,11 +1255,11 @@
                 $count = (int) $row['count'];
         
                 // Categorize based on status
-                if (in_array($status, ["Approved Comparison Data by Requestor", "For Procurement Verification", "Request Quotation sent to supplier", "Pending Supervisor Approval"])) {
+                if (in_array($status, ["Verified by Procurement", "For Procurement Verification", "Request Quotation sent to supplier", "Pending Supervisor Approval"])) {
                     $statusdata["on_going"] += $count;
                 } elseif ($status == "Hold request by Procurement") {
                     $statusdata["hold"] += $count;
-                } elseif ($status == "Verified by Procurement") {
+                } elseif ($status == "Approved Comparison Data by Requestor") {
                     $statusdata["completed"] += $count;
                 }
         
