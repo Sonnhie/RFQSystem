@@ -68,7 +68,7 @@ $(document).ready(function(){
             <td>${value.status}</td>
             <td><button class = 'btn btn-light btn-gradient btn-sm me-3' id='view-itemslist' data-fileid='${value.controlnumber}' data-bs-toggle='modal' data-bs-target='#requestdetails' title='See Details'><i class="fa-solid fa-eye"></i></button>
                 
-                <button class = 'btn btn-primary btn-gradient btn-sm me-3' id='verify-items' data-fileid='${value.controlnumber}' title='Verified'><i class="fa-solid fa-thumbs-up"></i></button>
+                <button class = 'btn btn-primary btn-gradient btn-sm me-3' id='verify-items' data-fileid='${value.controlnumber}' data-section='${value.section}' title='Verified'><i class="fa-solid fa-thumbs-up"></i></button>
                 <button class = 'btn btn-danger btn-gradient btn-sm' id='hold-items' data-fileid='${value.controlnumber}' title='Hold'><i class="fa-solid fa-ban"></i></button>
             </td>
         </tr>`;
@@ -154,7 +154,7 @@ $(document).ready(function(){
     });
 
     //function for action request
-    function actionRequest(url, tablecallback, action, id, status){
+    function actionRequest(url, tablecallback, action, id, status, section){
         //debugger
         //console.log("Url: " + url, "Form: " + formselector, "Modal: " + modalselector , "Action: " + action);
         //action
@@ -185,7 +185,7 @@ $(document).ready(function(){
                     }
     
                     // Proceed with the AJAX request after the user inputs the remarks
-                    PerformActionRequest(url, tablecallback, action, id, status, remarks);
+                    PerformActionRequest(url, tablecallback, action, id, status, section, remarks);
                 }
             });
         }else{
@@ -199,13 +199,13 @@ $(document).ready(function(){
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if(result.isConfirmed){
-                    PerformActionRequest(url, tablecallback, action, id, status);
+                    PerformActionRequest(url, tablecallback, action, id, status, section);
                 }
             })
         }    
     }
 
-    function PerformActionRequest(url, tablecallback, action, id, status, remarks = null){
+    function PerformActionRequest(url, tablecallback, action, id, status,section, remarks = null){
         $.ajax({
             url: url,
             method: 'POST',
@@ -213,7 +213,9 @@ $(document).ready(function(){
                 action: action,
                 id: id,
                 status: status,
-                remarks: remarks
+                remarks: remarks,
+                section: section
+
             },
             beforeSend: function(){
                 Swal.fire({
@@ -276,7 +278,9 @@ $(document).ready(function(){
         const id = $(this).data('fileid');
         let action = "btn_verify";
         let status = "Verified by Procurement";
+        let section = $(this).data('section');
         console.log('Control number: ', id, 'Action: ',action , 'Status: ', status);
+        console.log(section);
 
         if (id) {
             actionRequest(
@@ -284,7 +288,8 @@ $(document).ready(function(){
                 () => loadTable(1),
                 action,
                 id,
-                status
+                status,
+                section
             );
         }else{
             Swal.fire({
@@ -301,6 +306,7 @@ $(document).ready(function(){
         const id = $(this).data('fileid');
         let action = "btn_verify";
         let status = "Hold request by Procurement";
+        let section = $(this).data('section');
         console.log('Control number: ', id, 'Action: ',action , 'Status: ', status);
 
         if (id) {
@@ -309,7 +315,8 @@ $(document).ready(function(){
                 () => loadTable(1),
                 action,
                 id,
-                status
+                status,
+                section
             );
         }else{
             Swal.fire({

@@ -576,7 +576,18 @@
         header('Content-Type: application/json');
         $id = isset($_POST['id']) ? $_POST['id'] : null;
         $status = isset($_POST['status']) ? $_POST['status'] : null;
+        $section = isset($_POST['section']) ? $_POST['section'] : null;
+        $emailrecipient = $utility->FindEmailAddress($section);
+        $emailcc = [
+            "regine.guellena@nidec.com"
+        ];
 
+        $subject = "Request for Quotation Status Update";
+        $body = "
+                <p><strong>Control Number: </strong>$id</p>
+                <p><strong>Section: </strong>$section</p>
+                <p><strong>Status: </strong>$status</p>
+                ";
 
         if (empty($id)) {
             echo json_encode([
@@ -587,6 +598,7 @@
 
         $result =$utility->UpdateStatusSectionRequest($id, $status);
         if ($result) {
+            $emailresult = $utility->sendEmailNotification($emailrecipient, $emailcc, $subject, $body);
             echo json_encode([
                 'status' => 'success',
                 'message' => 'Successfuly updated.'

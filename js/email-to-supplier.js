@@ -31,7 +31,7 @@ $(document).ready(function(){
                 if (data.status == 'success') {
                     populateTable(data.data);
                     pagination(data.total_pages, data.current_page);
-                  //console.log(data.total_pages, data.current_page);
+                    console.log(data.total_pages, data.current_page);
                 }
                 else {
                     //console.log(data.message); // Show error message
