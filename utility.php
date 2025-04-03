@@ -679,7 +679,7 @@
             }
         
             $sqlquery .= " GROUP BY controlnumber LIMIT ? OFFSET ? "; // ✅ Properly structured query
-        
+            $countQuery .= " GROUP BY controlnumber";
             // **1️⃣ Prepare the COUNT Query**
             $stmt = $this->getConnection()->prepare($countQuery);
         

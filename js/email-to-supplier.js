@@ -75,8 +75,8 @@ $(document).ready(function(){
         });
     }
 
-    //function for pagination
-    function pagination(total_pages, currentPage){
+     //function for pagination
+     function pagination(total_pages, currentPage){
         let paginationHtml = "";
 
         paginationHtml += `<ul class="pagination">`
@@ -88,12 +88,15 @@ $(document).ready(function(){
                 paginationHtml += `<li class='page-item ${activeclass}'>`
                 paginationHtml += `<a class='page-link' href='#' data-page="${i}">${i}</button>`;
             }
+ 
         }
         else{
             paginationHtml += `<p class='text-center col-12'>No more pages available.</p>`;
         }
+
         $("#pagination").html(paginationHtml);
     }
+
 
     loadTable();
 
