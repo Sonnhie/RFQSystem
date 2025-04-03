@@ -447,7 +447,7 @@ $(document).ready(function() {
                 let rates = data.conversion_rates;
                 console.log("Rates Object:", rates); // Check if PHP exists
             
-                let currencyOptions = `<option value="1" selected>USD</option>`;
+                let currencyOptions = ``;
             
                 for (let currency in rates) {
                     console.log(`Adding ${currency}: ${rates[currency]}`);

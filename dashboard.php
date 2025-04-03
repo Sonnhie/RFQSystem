@@ -10,7 +10,35 @@
         header("Location: ./index.php");
     }
 ?>
-
+<nav class="navbar navbar-expand px-4 py-3">
+        <span class="fw-bold fs-4">
+            Welcome <?php echo $_SESSION['name']?>
+        </span>
+        <form action="#" class="d-none dsm-inline-block">
+            <div class="input-group input-group-navbar">
+                <input type="text" class="form-control border-0 rounded-0 pe-0 " 
+                 placeholder ="Search" aria-label="Search">
+                 <button class="btn border-0 rounded-0" type="button">
+                 <i class="material-symbols-outlined">search</i>
+                 </button>
+            </div>
+        </form>
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                        <img src="img/profile.png" data-role = "<?php echo $_SESSION['role'] ?>" class="avatar img-fluid" alt="" srcset="">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end rounded-0 border-0 shadow mt-3">
+                        <a href="#" class="dropdown-item">
+                        <i class="material-symbols-outlined">settings</i>
+                        <span>Settings</span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
    <!-- Tabs Navigation -->
    <ul class="nav nav-tabs mb-4" id="dashboardTabs" role="tablist">

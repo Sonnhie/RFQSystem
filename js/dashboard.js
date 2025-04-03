@@ -159,76 +159,80 @@ $(document).ready(function () {
     let previousRates = {};
 
     function updateExchangeRates(timeRange) {
-        $("#exchangeRatesTable").empty();
-
-        $.ajax({
-            url: `https://v6.exchangerate-api.com/v6/6305bface2cd44436516f0f2/latest/${baseCurrency}`,
-            method: 'GET',
-            success: function (data) {
-                if (data.result === 'success') {
-                    const exchangeRatesFromApi = data.conversion_rates;
-                    const requiredCurrencies = ['USD', 'PHP'];
-
-                    requiredCurrencies.forEach(function (currencyCode) {
-                        const currentRate = exchangeRatesFromApi[currencyCode];
-                        let previousRate = previousRates[currencyCode] || currentRate; // Default to current if no previous rate
-
-                        // Calculate rate change
-                        let rateChange = currentRate - previousRate;
-                        let changePercentage = ((rateChange / previousRate) * 100).toFixed(2);
-
-                        // Determine change class (increase, decrease, no change)
-                        let changeClass = rateChange > 0 ? "text-success" : rateChange < 0 ? "text-danger" : "text-muted";
-                        let changeIcon = rateChange > 0 ? "fa-arrow-up" : rateChange < 0 ? "fa-arrow-down" : "fa-minus";
-
-                        // Update previous rate
-                        previousRates[currencyCode] = currentRate;
-
-                        // Create row
-                        const row = $("<tr></tr>");
-
-                        // Currency cell
-                        const currencyCell = $('<td class="p-2"></td>');
-                        currencyCell.html(`
-                            <div class="d-flex align-items-center">
-                                <div class="currency-code">${currencyCode.substring(0, 1)}</div>
-                                <span>${currencyCode} (${currencyCode})</span>
-                            </div>
-                        `);
-
-                        // Rate cell
-                        const rateCell = $('<td class="p-2 text-end"></td>');
-                        rateCell.html(`
-                            <div class="d-flex align-items-center justify-content-end">
-                                <i class="fas fa-dollar-sign me-1 text-muted small"></i>
-                                ${currentRate.toFixed(4)}
-                            </div>
-                        `);
-
-                        // Change cell
-                        const changeCell = $('<td class="p-2 text-end"></td>');
-                        changeCell.html(`
-                            <div class="d-flex align-items-center justify-content-end ${changeClass}">
-                                <i class="fas ${changeIcon} me-1 small"></i>
-                                ${rateChange.toFixed(4)} (${changePercentage}%)
-                            </div>
-                        `);
-
-                        // Append cells to row
-                        row.append(currencyCell, rateCell, changeCell);
-
-                        // Append row to table
-                        $("#exchangeRatesTable").append(row);
-                    });
-                } else {
-                    console.error('API call failed:', data.error);
-                }
-            },
-            error: function (error) {
-                console.error('Error fetching exchange rates:', error);
-            }
-        });
-    }
+      $("#exchangeRatesTable").empty();
+      const API_URL = "get_exchange_rates.php";
+  
+      $.ajax({
+          url: API_URL,
+          method: 'GET',
+          dataType: 'json', // Ensure proper JSON handling
+          success: function (data) {
+              console.log(data); // Debugging output
+  
+              if (data.result === 'success') {
+                  const exchangeRatesFromApi = data.conversion_rates;
+                  const requiredCurrencies = ["USD", "PHP"];
+  
+                  requiredCurrencies.forEach(currencyCode => {
+                      const currentRate = exchangeRatesFromApi[currencyCode] || 0; // Handle missing currencies
+                      let previousRate = previousRates[currencyCode] || currentRate; // Default if no previous rate
+  
+                      // Calculate rate change
+                      let rateChange = currentRate - previousRate;
+                      let changePercentage = previousRate > 0 ? ((rateChange / previousRate) * 100).toFixed(2) : "0.00";
+  
+                      // Determine change class (increase, decrease, no change)
+                      let changeClass = rateChange > 0 ? "text-success" : rateChange < 0 ? "text-danger" : "text-muted";
+                      let changeIcon = rateChange > 0 ? "fa-arrow-up" : rateChange < 0 ? "fa-arrow-down" : "fa-minus";
+  
+                      // Update previous rate
+                      previousRates[currencyCode] = currentRate;
+  
+                      // Create row
+                      const row = $("<tr></tr>");
+  
+                      // Currency cell
+                      const currencyCell = $('<td class="p-2"></td>');
+                      currencyCell.html(`
+                          <div class="d-flex align-items-center">
+                              <div class="currency-code">${currencyCode.substring(0, 1)}</div>
+                              <span>${currencyCode} (${currencyCode})</span>
+                          </div>
+                      `);
+  
+                      // Rate cell
+                      const rateCell = $('<td class="p-2 text-end"></td>');
+                      rateCell.html(`
+                          <div class="d-flex align-items-center justify-content-end">
+                              ${currentRate.toFixed(4)}
+                          </div>
+                      `);
+  
+                      // Change cell
+                      const changeCell = $('<td class="p-2 text-end"></td>');
+                      changeCell.html(`
+                          <div class="d-flex align-items-center justify-content-end ${changeClass}">
+                              <i class="fas ${changeIcon} me-1 small"></i>
+                              ${rateChange.toFixed(4)} (${changePercentage}%)
+                          </div>
+                      `);
+  
+                      // Append cells to row
+                      row.append(currencyCell, rateCell, changeCell);
+  
+                      // Append row to table
+                      $("#exchangeRatesTable").append(row);
+                  });
+              } else {
+                  console.error("API call failed:", data.message);
+              }
+          },
+          error: function (xhr, status, error) {
+              console.error("Error fetching exchange rates:", error);
+          }
+      });
+  }
+  
 
     function updateLastUpdatedTime() {
       const timeString = lastUpdated.toLocaleTimeString();
