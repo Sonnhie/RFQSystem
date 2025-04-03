@@ -1,0 +1,87 @@
+/* Base Body Styling */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background: url('https://i.pinimg.com/736x/79/24/37/79243779b757e17cbe20c419326e31e2.jpg') no-repeat center center fixed; /* Background image for the frosted effect */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.title{
+    color: rgba(255, 255, 255, 0.945);
+    text-align: center;
+    margin-bottom: 50px;
+}
+.form-text{
+    color: rgba(237, 237, 238, 0.75);
+}
+/* Base Glassmorphism Styling */
+.glass-card {
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent white for glass effect */
+    backdrop-filter: blur(10px); /* Frosted glass blur */
+    border-radius: var(--card-radius, 20px); /* Allows customization of radius */
+    padding: var(--card-padding, 20px); /* Allows customization of padding */
+    width: var(--card-width, 400px); /* Allows customization of width */
+    box-shadow: var(--card-shadow, 0 4px 8px rgba(0, 0, 0, 0.1)); /* Customizable shadow */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border to mimic glass edges */
+    transition: var(--card-transition, all 0.3s ease); /* Smooth transition for changes */
+}
+
+/* Glass Card Body Styling */
+.glass-card-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: var(--card-body-padding, 20px); /* Customizable padding */
+    color: var(--card-text-color, #fffffff8); /* Customizable text color */
+}
+
+/* Polymorphic Glass Styles */
+.glass-card.primary {
+    --card-bg-color: rgba(0, 123, 255, 0.1); /* Custom background for primary */
+    --card-shadow: 0 4px 10px rgba(0, 123, 255, 0.4); /* Custom shadow for primary */
+    --card-radius: 30px; /* Custom radius */
+    --card-text-color: #007bff; /* Custom text color */
+}
+
+.glass-card.secondary {
+    --card-bg-color: rgba(108, 117, 125, 0.1); /* Custom background for secondary */
+    --card-shadow: 0 4px 10px rgba(108, 117, 125, 0.3); /* Custom shadow for secondary */
+    --card-radius: 25px; /* Custom radius */
+    --card-text-color: #6c757d; /* Custom text color */
+}
+
+.glass-card.success {
+    --card-bg-color: rgba(40, 167, 69, 0.1); /* Custom background for success */
+    --card-shadow: 0 4px 10px rgba(40, 167, 69, 0.4); /* Custom shadow for success */
+    --card-radius: 35px; /* Custom radius */
+    --card-text-color: #28a745; /* Custom text color */
+}
+
+.glass-card.warning {
+    --card-bg-color: rgba(255, 193, 7, 0.1); /* Custom background for warning */
+    --card-shadow: 0 4px 10px rgba(255, 193, 7, 0.3); /* Custom shadow for warning */
+    --card-radius: 20px; /* Custom radius */
+    --card-text-color: #ffc107; /* Custom text color */
+}
+
+/* Hover effect to intensify the glass effect */
+.glass-card:hover {
+    backdrop-filter: blur(15px); /* Increase blur on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+.form-control{
+    width: 100%;
+    font-size: 1.1rem;
+}
+.btn{
+    width: 100%;
+}
