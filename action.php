@@ -392,10 +392,8 @@
         $utility->getverifyList($searchInput, $searchBy);
     }
 
-
-
-   //load the request table
-   if (!empty($_POST['action']) && $_POST['action'] == 'emailtable') {
+    //load the request table
+    if (!empty($_POST['action']) && $_POST['action'] == 'emailtable') {
         header('Content-Type: application/json');
         //$section = $_POST['section'];
         $searchInput = $_POST['input'] ?? ''; 
@@ -405,8 +403,8 @@
     }
     
 
-        //Send email to supplier
-        $data = json_decode(file_get_contents("php://input"), true);
+    //Send email to supplier
+    $data = json_decode(file_get_contents("php://input"), true);
     if (!empty($data['action']) && $data['action'] == 'btn_sendemail') {
         header('Content-Type: application/json');
         $recipient = isset($data['recipients']) ? $data['recipients'] : [];
@@ -546,7 +544,7 @@
     }
 
      //View request information
-     if (!empty($_POST['action']) && $_POST['action'] == 'btn_comparisondetails' && !empty($_POST['id'])) {
+    if (!empty($_POST['action']) && $_POST['action'] == 'btn_comparisondetails' && !empty($_POST['id'])) {
         header('Content-Type: application/json');
         $id = isset($_POST['id']) ? $_POST['id'] : null;
         $currency = isset($_POST['currency']) ? $_POST['currency'] : null;
@@ -572,7 +570,7 @@
         }
     }
     
-    if (!empty($_POST['action'] && $_POST['action'] == 'btn_verify')) {
+    if (!empty($_POST['action']) && $_POST['action'] == 'btn_verify') {
         header('Content-Type: application/json');
         $id = isset($_POST['id']) ? $_POST['id'] : null;
         $status = isset($_POST['status']) ? $_POST['status'] : null;
@@ -588,13 +586,6 @@
                 <p><strong>Section: </strong>$section</p>
                 <p><strong>Status: </strong>$status</p>
                 ";
-
-        if (empty($id)) {
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'Invalid or empty control number.'
-            ]);
-        }
 
         $result =$utility->UpdateStatusSectionRequest($id, $status);
         if ($result) {

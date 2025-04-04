@@ -770,12 +770,12 @@
             $attachments = $this->GetAttachment($id);
             $mail = new PHPMailer(true);
             try{
-                //$mail->SMTPDebug = 3;
+               // $mail->SMTPDebug = 3;
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
                 $mail->Username = 'nidecrfq.noreply@gmail.com';
-                $mail->Password = 'xyprohexdaphtvrj';
+                $mail->Password = 'fyubebmnbkdvupaw';
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = '587';
 

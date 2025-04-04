@@ -179,7 +179,7 @@ $(document).ready(function(){
         const fileId = $(this).data('fileid');
         const controlid = $(this).data('controlid');
         let status = 'Request Quotation sent to supplier';
-        console.log('Recipients: ', recipients, 'CC: ', cc, 'BCC: ', bcc, 'File ID: ', fileId);
+        console.log('Recipients: ', recipients, 'CC: ', cc, 'BCC: ', bcc, 'File ID: ', fileId, action);
 
         Swal.fire({ 
             title: 'Are you sure?',

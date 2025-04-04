@@ -14,6 +14,7 @@ $(document).ready(function () {
     // Initialize the dashboard
     initializeDashboard();
     updateStatusChart();
+    
     // Event handlers for time range filters
     $("#statusTimeRange, #exchangeTimeRange").on("change", function () {
       const id = $(this).attr("id");
