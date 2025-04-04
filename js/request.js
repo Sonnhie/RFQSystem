@@ -179,7 +179,7 @@ $(document).ready(function() {
                     Swal.close();
 
                     //debugger
-                   // console.log(response);
+                   console.log(response);
                     try{
                         if (response.status === 'success') {
                             Swal.fire({

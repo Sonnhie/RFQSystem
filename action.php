@@ -90,7 +90,7 @@
                     $errorcount++;
                 }
             }
-           
+            $errormess = "";
             if ($successcount > 0) {
                 echo json_encode([
                     'status' => 'success',
@@ -100,7 +100,7 @@
             if ($errorcount > 0) {
                 echo json_encode([
                     'status' => 'error',
-                    'message' => $errorcount . $controlNumber . ' request(s) failed to add.',
+                    'message' => $errorcount . $controlNumber . ' request(s) failed to add.' . error_log("Error in Ubuntu: " . json_encode(error_get_last()))
                 ]);
             }
         }
