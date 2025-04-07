@@ -279,10 +279,8 @@ $(document).ready(function() {
             let itemname = $(this).closest(".item-block").find("h5").data("itemname");
             var controlnumber = $('#controlNumber').val();
             let quantity = $(this).closest(".item-block").find("p").data("quantity");
-            let status = "For Verification";
-          
-
-
+            let status = "For Comparison Verification";
+            
             console.log(section,itemname, controlnumber);
 
             $(this).find("tbody tr").each(function() {
@@ -306,7 +304,7 @@ $(document).ready(function() {
         });
         console.log(supplierData);
         $.ajax({
-            url: "action.php",
+            url: "./action.php",
             type: "POST",
             data: { 
                 action: 'addcomparison',
@@ -314,6 +312,7 @@ $(document).ready(function() {
              },
             dataType: "json",
             success: function(data) {
+                console.log(data);
                 if (data.status == "success") {
                     Swal.fire({
                         title: 'Success',
@@ -324,10 +323,20 @@ $(document).ready(function() {
                         loadTable(1);
                         $("#comparisonModal").modal("hide");
                         $("#comparisonForm")[0].reset();
+                        console.log(data.email);
                     });
                 }
+                else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: data.message,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    }); // Show error message
+                }
             },
-            error: function(xhr, status, error) {
+            error: function(xhr, status, error, data) {
+                console.log(data);
                 Swal.fire({
                     title: 'Error',
                     text: 'Error in adding comparison',

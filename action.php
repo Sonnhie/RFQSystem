@@ -501,10 +501,10 @@
     
     if (!empty($_POST['action']) && $_POST['action'] == 'addcomparison') {
         $suppliers = isset($_POST['supplierData'] ) ? $_POST['supplierData'] : [];
-        $receipient = isset($_POST['section']) ? $_POST['section'] : null;
-        $cc = isset($_SESSION['section']) ? $_SESSION['section'] : null;
+        $cc = isset($_SESSION['department']) ? $_SESSION['department'] : null;
         $controlNumber = isset($_POST['controlnumber']) ? $_POST['controlnumber'] : null;
         $status = isset($_POST['status']) ? $_POST['status'] : null;
+        $section = isset($_POST['section']) ? $_POST['section'] : null;
         $emailrecipient[] = $utility->FindEmailAddress($section);
         $emailcc[] = $utility->FindEmailAddress($cc);
 
@@ -517,8 +517,8 @@
         $result = $utility->SaveSupplierData($suppliers);
 
         if ($result) {
-
-            $emailresult = $utility->sendEmailNotification($emailrecipient, $emailcc, $subject, $body);
+              $update = $utility->UpdateStatusSectionRequest($controlNumber, $status);
+          //  $emailresult = $utility->sendEmailNotification($emailrecipient, $emailcc, $subject, $body);
             echo json_encode([
                 'status' => 'success',
                 'message' => 'Comparison successfully added.'
@@ -527,7 +527,7 @@
         else{
             echo json_encode([
                 'status' => 'error',
-                'message' => 'Comparison failed to add.'
+                'message' => 'Comparison failed to add.' . error_log("Error in Ubuntu: " . json_encode(error_get_last()))
             ]);
         }
     }

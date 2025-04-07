@@ -1050,7 +1050,6 @@
         
             $stmt->close();
         }
-        
 
         public function GetComparisonData($controlnumber) {
             $sql = "SELECT itemname, quantity, suppliername, unitprice, discount 
@@ -1175,7 +1174,7 @@
             $mail = new PHPMailer(true);
             
             try{
-                //$mail->SMTPDebug = 3;
+                $mail->SMTPDebug = 3;
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
@@ -1320,9 +1319,6 @@
         
             echo json_encode($statusdata);
         }
-
-        
-        
-              
+  
     }
 ?>
