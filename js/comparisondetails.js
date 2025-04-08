@@ -304,7 +304,7 @@ $(document).ready(function() {
         });
         console.log(supplierData);
         $.ajax({
-            url: "./action.php",
+            url: "action.php",
             type: "POST",
             data: { 
                 action: 'addcomparison',
@@ -323,7 +323,7 @@ $(document).ready(function() {
                         loadTable(1);
                         $("#comparisonModal").modal("hide");
                         $("#comparisonForm")[0].reset();
-                        console.log(data.email);
+                       // console.log(data.email);
                     });
                 }
                 else {

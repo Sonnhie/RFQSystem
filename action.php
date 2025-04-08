@@ -500,13 +500,14 @@
     }
     
     if (!empty($_POST['action']) && $_POST['action'] == 'addcomparison') {
+        header('Content-Type: application/json');
         $suppliers = isset($_POST['supplierData'] ) ? $_POST['supplierData'] : [];
         $cc = isset($_SESSION['department']) ? $_SESSION['department'] : null;
         $controlNumber = isset($_POST['controlnumber']) ? $_POST['controlnumber'] : null;
         $status = isset($_POST['status']) ? $_POST['status'] : null;
         $section = isset($_POST['section']) ? $_POST['section'] : null;
-        $emailrecipient[] = $utility->FindEmailAddress($section);
-        $emailcc[] = $utility->FindEmailAddress($cc);
+        $emailrecipient = $utility->FindEmailAddress($section);
+        $emailcc = $utility->FindEmailAddress($cc);
 
         $subject = "Request for Quotation Status Update";
         $body = "
@@ -518,7 +519,7 @@
 
         if ($result) {
               $update = $utility->UpdateStatusSectionRequest($controlNumber, $status);
-          //  $emailresult = $utility->sendEmailNotification($emailrecipient, $emailcc, $subject, $body);
+              $emailresult = $utility->sendEmailNotification($emailrecipient, $emailcc, $subject, $body);
             echo json_encode([
                 'status' => 'success',
                 'message' => 'Comparison successfully added.'

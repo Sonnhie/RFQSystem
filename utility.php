@@ -937,7 +937,7 @@
                     $unitprice = $data['itemprice'];
                     $discount = $data['discount'];
                     $section = $data['section'];
-                    $status = "For Verification";
+                    $status = $data['status'];
         
                     $stmt->bind_param("ssssddds", $controlnumber, $itemname, $section, $suppliername, $quantity, $unitprice, $discount, $status);
                     $stmt->execute();
