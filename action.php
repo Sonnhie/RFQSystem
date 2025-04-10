@@ -18,9 +18,10 @@
     //load the hold request table
     if (!empty($_POST['action']) && $_POST['action'] == 'holdrequestTable' && !empty($_POST['section'])) {
         header('Content-Type: application/json');
-        //$section = $_POST['section'];
         $searchInput = $_POST['input'] ?? ''; 
         $searchBy = $_POST['filterby'] ?? '';
+
+
         $utility->holdrequestList($searchInput, $searchBy);
     }
 
@@ -350,7 +351,7 @@
         header('Content-Type: application/json');
         $controlNumber = isset($_POST['id']) ? ($_POST['id']) : null;
         $status = isset($_POST['status']) ? ($_POST['status']) : null;
-
+        $remarks = isset($_POST['remarks']) ? ($_POST['remarks']) : null;
         if (empty($controlNumber)) {
             echo json_encode([
                 'status' => 'error',
@@ -358,7 +359,7 @@
             ]);
         }
 
-        $result = $utility->UpdateStatusSectionRequest($controlNumber, $status);
+        $result = $utility->UpdateStatusSectionRequest($controlNumber, $status, $remarks);
         if ($result) {
 
             if ($status == "Disapproved Request") {
@@ -577,6 +578,7 @@
         $status = isset($_POST['status']) ? $_POST['status'] : null;
         $section = isset($_POST['section']) ? $_POST['section'] : null;
         $emailrecipient = $utility->FindEmailAddress($section);
+        $remarks = isset($_POST['remarks']) ? $_POST['remarks'] : null;
         $emailcc = [
             "regine.guellena@nidec.com"
         ];
@@ -588,7 +590,7 @@
                 <p><strong>Status: </strong>$status</p>
                 ";
 
-        $result =$utility->UpdateStatusSectionRequest($id, $status);
+        $result =$utility->UpdateStatusSectionRequest($id, $status, $remarks);
         if ($result) {
             $emailresult = $utility->sendEmailNotification($emailrecipient, $emailcc, $subject, $body);
             echo json_encode([

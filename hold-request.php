@@ -51,6 +51,7 @@
                                         <th>Section</th>
                                         <th>Date Requested</th>
                                         <th>Status</th>
+                                        <th>Remarks</th>
                                         <th>Action</th>
 									</tr>
 								</thead>

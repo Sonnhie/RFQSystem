@@ -5,7 +5,6 @@
     require __DIR__ . '/vendor/phpmailer/phpmailer/src/SMTP.php';
     require __DIR__ . '/vendor/phpmailer/phpmailer/src/Exception.php';
 
-
     use Dotenv\Dotenv;
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
@@ -79,9 +78,9 @@
             $offset = ($page - 1) * $limit;
         
             // Base queries
-            $countQuery = "SELECT COUNT(*) as total FROM rfq_request WHERE section = ? AND status <> ?";
+            $countQuery = "SELECT COUNT(*) as total FROM rfq_request WHERE section = ?";
             $sqlquery = "SELECT id, controlnumber, status, itemname, description, purpose, quantity, unitofquantity, date_requested 
-                         FROM rfq_request WHERE section = ? AND status <> ?";
+                         FROM rfq_request WHERE section = ?";
         
             // Append search filter
             if (!empty($searchinput)) {
@@ -109,9 +108,9 @@
             // **2️⃣ Bind parameters dynamically**
             if (!empty($searchinput)) {
                 $searchinput = "%$searchinput%"; // Add wildcard for LIKE
-                $stmt->bind_param("sss", $section, $status, $searchinput);
+                $stmt->bind_param("ss", $section, $searchinput);
             } else {
-                $stmt->bind_param("ss", $section, $status);
+                $stmt->bind_param("s", $section);
             }
         
             $stmt->execute();
@@ -126,7 +125,7 @@
             if (!empty($searchinput)) {
                 $stmt->bind_param("sssii", $section, $status, $searchinput, $limit, $offset);
             } else {
-                $stmt->bind_param("ssii", $section, $status, $limit, $offset);
+                $stmt->bind_param("sii", $section, $limit, $offset);
             }
         
             $stmt->execute();
@@ -564,7 +563,7 @@
 
         public function holdrequestList($searchinput, $searchby) {
 
-            $status1 = "Hold request by Procurement";
+            $status = "Hold request by Procurement";
             $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
             $limit = isset($_POST['limit']) ? (int)$_POST['limit'] : 10;
             $offset = ($page - 1) * $limit;
@@ -572,7 +571,7 @@
             // Base queries
             $countQuery = "SELECT COUNT(*) as total FROM rfq_request WHERE status = ?";
             $sqlquery = "SELECT id, controlnumber, section, status, itemname, description, purpose, quantity, unitofquantity, date_requested, remarks 
-                         FROM rfq_request WHERE status = ?";
+                         FROM rfq_request WHERE  status = ?";
         
             // Append search filter
             if (!empty($searchinput)) {
@@ -585,15 +584,7 @@
                 } elseif ($searchby == "controlnumber") {
                     $countQuery .= " AND controlnumber LIKE ?";
                     $sqlquery .= " AND controlnumber LIKE ?";
-                }elseif ($searchby == "status") {
-                    $countQuery .= " AND status LIKE ?";
-                    $sqlquery .= " AND status LIKE ?";
-                }elseif ($searchby == "section") {
-                    $countQuery .= " AND section LIKE ?";
-                    $sqlquery .= " AND section LIKE ?";
                 }
-                
-                
             }
         
             $sqlquery .= " LIMIT ? OFFSET ?"; // ✅ Properly structured query
@@ -604,9 +595,9 @@
             // **2️⃣ Bind parameters dynamically**
             if (!empty($searchinput)) {
                 $searchinput = "%$searchinput%"; // Add wildcard for LIKE
-                $stmt->bind_param("ss", $status1, $searchinput);
+                $stmt->bind_param("ss", $status, $searchinput);
             } else {
-                $stmt->bind_param("s", $status1);
+                $stmt->bind_param("s", $status);
             }
         
             $stmt->execute();
@@ -619,9 +610,9 @@
         
             // **4️⃣ Bind parameters dynamically**
             if (!empty($searchinput)) {
-                $stmt->bind_param("ssii", $status1, $searchinput, $limit, $offset);
+                $stmt->bind_param("sii", $searchinput, $limit, $offset);
             } else {
-                $stmt->bind_param("sii", $status1, $limit, $offset);
+                $stmt->bind_param("sii", $status, $limit, $offset);
             }
         
             $stmt->execute();
@@ -674,8 +665,6 @@
                     $countQuery .= " AND section LIKE ?";
                     $sqlquery .= " AND section LIKE ?";
                 }
-                
-                
             }
         
             $sqlquery .= " GROUP BY controlnumber LIMIT ? OFFSET ? "; // ✅ Properly structured query

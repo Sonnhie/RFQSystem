@@ -92,86 +92,121 @@ $(document).ready(function(){
         $("#pagination").html(paginationHtml);
     }
 
-    //function for action request
     function actionRequest(url, tablecallback, action, id, status){
         //debugger
         //console.log("Url: " + url, "Form: " + formselector, "Modal: " + modalselector , "Action: " + action);
         //action
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "Update status of this request?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-        }).then((result) => {
-            if(result.isConfirmed){
-                $.ajax({
-                    url: url,
-                    method: 'POST',
-                    data:{
-                        action: action,
-                        id: id,
-                        status: status
-                    },
-                    beforeSend: function(){
-                        Swal.fire({
-                            title: 'Please wait...',
-                            text: 'Processing your request',
-                            allowOutsideClick: false,
-                            showConfirmButton: false,
-                            willOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
-                    },
-                    success: function(response){
-                        Swal.close();
-                        //debugger
-                       console.log(response);
-                        try{
-                            if (response.status === 'success') {
-                                Swal.fire({
-                                    title: 'Success',
-                                    text: response.message,
-                                    icon: 'success',
-                                    confirmButtonText: 'OK',
-                                }).then(()=>{
-                                    tablecallback();
-                                });
-                            }
-                            else{
-                                Swal.fire({
-                                    title: 'Error!',
-                                    text: response.message,
-                                    icon: 'error',
-                                    confirmButtonText: 'Try again'
-                                });
-                            }
-                        }
-                        catch(e){
-                            Swal.fire({
-                                title: 'Error!',
-                                text: `Invalid server response: ${e}`,
-                                icon: 'error',
-                                confirmButtonText: 'Try again' 
-                            });
-                        }
-                    },
-                    error: function(xhr, status, error){
-                        Swal.close();
+
+        if (status == "Disapproved Request") {
+            Swal.fire({
+                title: 'Please provide remarks',
+                input: 'textarea',
+                inputPlaceholder: 'Enter your remarks here...',
+                inputAttributes: {
+                    'aria-label': 'Enter your remarks'
+                },
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Submit'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const remarks = result.value; // Get the inputted remarks
+                    if (!remarks) {
                         Swal.fire({
                             title: 'Error!',
-                            text: `AJAX request failed: ${xhr.response || error}`,
+                            text: 'Remarks are required.',
+                            icon: 'error',
+                            confirmButtonText: 'Try again'
+                        });
+                        return;
+                    }
+    
+                    // Proceed with the AJAX request after the user inputs the remarks
+                    PerformActionRequest(url, tablecallback, action, id, status, remarks);
+                }
+            });
+        }else{
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Approved this request?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if(result.isConfirmed){
+                    PerformActionRequest(url, tablecallback, action, id, status);
+                }
+            })
+        }    
+    }
+
+    function PerformActionRequest(url, tablecallback, action, id, status, remarks = null){
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data:{
+                action: action,
+                id: id,
+                status: status,
+                remarks: remarks
+            },
+            beforeSend: function(){
+                Swal.fire({
+                    title: 'Please wait...',
+                    text: 'Processing your request',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success: function(response){
+                Swal.close();
+                //debugger
+               console.log(response);
+                try{
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                        }).then(()=>{
+                            tablecallback();
+                        });
+                    }
+                    else{
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.message,
                             icon: 'error',
                             confirmButtonText: 'Try again'
                         });
                     }
+                }
+                catch(e){
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `Invalid server response: ${e}`,
+                        icon: 'error',
+                        confirmButtonText: 'Try again' 
+                    });
+                }
+            },
+            error: function(xhr, status, error){
+                Swal.close();
+                Swal.fire({
+                    title: 'Error!',
+                    text: `AJAX request failed: ${xhr.response || error}`,
+                    icon: 'error',
+                    confirmButtonText: 'Try again'
                 });
             }
-        })
-        
+        });
     }
 
     //Action to change page when click

@@ -10,31 +10,30 @@ $(document).ready(function(){
     return new bootstrap.Tooltip(tooltipTriggerEl)
     });
 
+    //function to load table
     function loadTable(page = 1){
-       // var section = $('#section').val();
-       // console.log(section);
-       const input = $('#searchinput').val().toLowerCase();
-       const filterby = $('#searchby').val();
-        console.log("Ajax running");
+        var section = $('#section').val();
+        const input = $('#searchinput').val().toLowerCase();
+        const filterby = $('#searchby').val();
+
+    // console.log(section);
+    //console.log(input, filterby);
         $.ajax({
             url: "action.php",
             type: "POST",
-            data: { 
-                action: 'holdrequestTable',
-                page: page,
-                limit: limit,
-                input: input,
-                filterby: filterby
-             },
+            data: { action: 'holdrequestTable',
+                    section: section,
+                    page: page,
+                    limit: limit,
+                    input: input,
+                    filterby: filterby
+            },
             dataType: "json",
             success: function(data) {
-                //const JsonParsed = JSON.parse(data);
-                //console.log(JsonParsed);
-                console.log("Ajax successfully compiled");
                 if (data.status == 'success') {
                     populateTable(data.data);
                     pagination(data.total_pages, data.current_page);
-                  //console.log(data.total_pages, data.current_page);
+                //   console.log(data.total_pages, data.current_page);
                 }
                 else {
                     console.log(data.message); // Show error message
@@ -69,6 +68,7 @@ $(document).ready(function(){
             <td>${value.section}</td>
             <td>${value.date_requested}</td>
             <td>${value.status}</td>
+             <td>${value.remarks}</td>
             <td>
                 <button class = 'btn btn-light btn-gradient btn-sm me-3' id='view-itemslist' data-fileid='${value.controlnumber}' data-bs-toggle='modal' data-bs-target='#requestdetails' title='See Details'><i class="fa-solid fa-eye"></i></button>
                 <button class = 'btn btn-primary btn-gradient btn-sm me-3' id='verify-items' data-fileid='${value.controlnumber}' title='Verified'><i class="fa-solid fa-thumbs-up"></i></button>
