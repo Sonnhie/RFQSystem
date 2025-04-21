@@ -352,6 +352,7 @@
         $controlNumber = isset($_POST['id']) ? ($_POST['id']) : null;
         $status = isset($_POST['status']) ? ($_POST['status']) : null;
         $remarks = isset($_POST['remarks']) ? ($_POST['remarks']) : null;
+        
         if (empty($controlNumber)) {
             echo json_encode([
                 'status' => 'error',

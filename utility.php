@@ -764,7 +764,7 @@
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
                 $mail->Username = 'nidecrfq.noreply@gmail.com';
-                $mail->Password = 'fyubebmnbkdvupaw';
+                $mail->Password = 'yybpbwdewtcegrzd';
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = '587';
 
@@ -1168,7 +1168,7 @@
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
                 $mail->Username = 'nidecrfq.noreply@gmail.com';
-                $mail->Password = 'xyprohexdaphtvrj';
+                $mail->Password = 'yybpbwdewtcegrzd';
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = '587';
 
@@ -1250,7 +1250,6 @@
                 } elseif ($status == "Approved Comparison Data by Requestor") {
                     $statusdata["completed"] += $count;
                 }
-        
                 // Sum total requests
                 $statusdata["total_requests"] += $count;
             }
